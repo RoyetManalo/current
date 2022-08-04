@@ -8,11 +8,30 @@ import {
   ImageBackground,
 } from 'react-native';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+import RNFS from 'react-native-fs';
+import dateFormat, {masks} from 'dateformat';
+
+const now = new Date();
 
 const SnapshotScreen = ({navigation, route}) => {
   const {user, path} = route.params;
 
-  const saveImage = () => {};
+  const saveImage = () => {
+    const imagePath = path;
+    const randomNum = Math.floor(Math.random() * (999 - 100 + 1) + 100);
+    const date = dateFormat(now, 'dd-mm-yyyy');
+    const newImagePath =
+      RNFS.ExternalDirectoryPath + `/image-${date}-${randomNum}.jpg`; // dont use :
+    console.log(imagePath);
+    console.log(newImagePath);
+    RNFS.moveFile(imagePath, newImagePath)
+      .then(() => {
+        // console.log('Image Move', imagePath, '--to--', newImagePath);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   return (
     <ImageBackground
