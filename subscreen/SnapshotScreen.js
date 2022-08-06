@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Button,
   Text,
@@ -10,11 +10,16 @@ import {
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import RNFS from 'react-native-fs';
 import dateFormat, {masks} from 'dateformat';
+import {useMutation} from '@apollo/client';
+import {POST_IMAGE} from '../mutations/PostMutations';
+import {cos} from 'react-native-reanimated';
 
 const now = new Date();
 
 const SnapshotScreen = ({navigation, route}) => {
-  const {user, path} = route.params;
+  const {path} = route.params;
+  const [imagePath, setImagePath] = useState('');
+  console.log(path);
 
   const saveImage = () => {
     const imagePath = path;
@@ -22,16 +27,22 @@ const SnapshotScreen = ({navigation, route}) => {
     const date = dateFormat(now, 'dd-mm-yyyy');
     const newImagePath =
       RNFS.ExternalDirectoryPath + `/image-${date}-${randomNum}.jpg`; // dont use :
-    console.log(imagePath);
-    console.log(newImagePath);
-    RNFS.moveFile(imagePath, newImagePath)
-      .then(() => {
-        // console.log('Image Move', imagePath, '--to--', newImagePath);
+
+    // convert file path to base64 string to prepare for sending in aws s3/ then decoded it on the server as a buffer
+    RNFS.readFile(path, 'base64')
+      .then(file => {
+        console.log('FIle path is base64 now');
+        setImagePath(file);
+        postImage(file);
       })
-      .catch(error => {
-        console.log(error);
-      });
+      .catch(error => console.log(error));
   };
+
+  const [postImage] = useMutation(POST_IMAGE, {
+    variables: {
+      imagePath,
+    },
+  });
 
   return (
     <ImageBackground
@@ -44,7 +55,7 @@ const SnapshotScreen = ({navigation, route}) => {
         height: '100%',
       }}>
       <FontAwesome5Icon
-        name="arrow-left"
+        name="times"
         size={30}
         color="#000"
         style={styles.back}
