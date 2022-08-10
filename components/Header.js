@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Dimensions} from 'react-native';
+import colors from '../global';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+
+const windowWidth = Dimensions.get('window').width;
 
 const Header = () => {
   return (
@@ -11,9 +18,11 @@ const Header = () => {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: '#1D1D1D',
+    backgroundColor: colors.primary,
     paddingVertical: 10,
     paddingHorizontal: 20,
+    // width: windowWidth,
+    marginHorizontal: -10,
   },
   text: {
     color: '#fff',

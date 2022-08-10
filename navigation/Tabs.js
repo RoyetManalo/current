@@ -4,19 +4,27 @@ import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import HomeScreen from '../screens/HomeScreen';
 import CreateScreen from '../screens/CreateScreen';
 import ArchiveScreen from '../screens/ArchiveScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+import colors from '../global';
 
 const Tab = createBottomTabNavigator();
 
 const Tabs = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={{tabBarHideOnKeyboard: true}}>
       <Tab.Screen
         name="Home"
         component={HomeScreen}
         options={{
+          // tabBarHideOnKeyboard: true,
           headerShown: false,
-          tabBarIcon: () => (
-            <FontAwesome5Icon name="home" color={'#1D1D1D'} size={30} />
+          tabBarActiveTintColor: colors.primary,
+          tabBarIcon: ({focused}) => (
+            <FontAwesome5Icon
+              name="home"
+              color={focused ? colors.primary : '#1D1D1D'}
+              size={30}
+            />
           ),
         }}
       />
@@ -25,8 +33,13 @@ const Tabs = () => {
         component={CreateScreen}
         options={{
           headerShown: false,
-          tabBarIcon: () => (
-            <FontAwesome5Icon name="plus" color={'#1D1D1D'} size={30} />
+          tabBarActiveTintColor: colors.primary,
+          tabBarIcon: ({focused}) => (
+            <FontAwesome5Icon
+              name="plus"
+              color={focused ? colors.primary : '#1D1D1D'}
+              size={30}
+            />
           ),
         }}
       />
@@ -34,9 +47,39 @@ const Tabs = () => {
         name="Archive"
         component={ArchiveScreen}
         options={{
-          headerShown: false,
-          tabBarIcon: () => (
-            <FontAwesome5Icon name="archive" color={'#1D1D1D'} size={30} />
+          tabBarActiveTintColor: colors.primary,
+          headerStyle: {
+            backgroundColor: colors.primary,
+          },
+          headerTitleStyle: {
+            color: 'white',
+          },
+          tabBarIcon: ({focused}) => (
+            <FontAwesome5Icon
+              name="archive"
+              color={focused ? colors.primary : '#1D1D1D'}
+              size={30}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          tabBarActiveTintColor: colors.primary,
+          headerStyle: {
+            backgroundColor: colors.primary,
+          },
+          headerTitleStyle: {
+            color: 'white',
+          },
+          tabBarIcon: ({focused}) => (
+            <FontAwesome5Icon
+              name="user"
+              color={focused ? colors.primary : '#1D1D1D'}
+              size={30}
+            />
           ),
         }}
       />

@@ -1,31 +1,51 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Button,
+  SafeAreaView,
+} from 'react-native';
 import {useQuery} from '@apollo/client/react';
 import {GET_USERS} from '../queries/UserQueries';
+import Post from '../components/Post';
+import colors from '../global';
+import Header from '../components/Header';
+
+console.log(colors);
 
 const HomeScreen = () => {
-  const {loading, error, data} = useQuery(GET_USERS);
-  // Get Feed
-
-  if (loading) return console.log('loading');
-  if (error) return console.log(error);
-
+  const feed = [
+    {
+      id: 1,
+      imagePath: '../assets/image-22-08-06-105922.jpg',
+    },
+    {
+      id: 2,
+      imagePath: '../assets/image-22-08-06-105922.jpg',
+    },
+    {
+      id: 3,
+      imagePath: '../assets/image-22-08-06-105922.jpg',
+    },
+  ];
   return (
-    <>
-      {!loading && !error && (
-        <View>
-          <Text style={styles.text}>Home</Text>
-        </View>
-      )}
-    </>
+    <SafeAreaView style={styles.container}>
+      <Header />
+      <FlatList
+        data={feed}
+        renderItem={({item}) => <Post path={item} key={item.id} />}
+      />
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  text: {
-    textAlign: 'center',
-    fontSize: 20,
-    color: '#000',
+  container: {
+    flex: 1,
+    paddingHorizontal: 10,
+    backgroundColor: 'gainsboro',
   },
 });
 

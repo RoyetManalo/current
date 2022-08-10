@@ -29,13 +29,16 @@ const SnapshotScreen = ({navigation, route}) => {
       RNFS.ExternalDirectoryPath + `/image-${date}-${randomNum}.jpg`; // dont use :
 
     // convert file path to base64 string to prepare for sending in aws s3/ then decoded it on the server as a buffer
-    RNFS.readFile(path, 'base64')
-      .then(file => {
-        console.log('FIle path is base64 now');
-        setImagePath(file);
-        postImage(file);
-      })
-      .catch(error => console.log(error));
+    // RNFS.readFile(path, 'base64')
+    //   .then(file => {
+    //     console.log('FIle path is base64 now');
+    //     setImagePath(file);
+    //     postImage(file);
+    //   })
+    //   .catch(error => console.log(error));
+    navigation.navigate('Caption', {
+      path,
+    });
   };
 
   const [postImage] = useMutation(POST_IMAGE, {
